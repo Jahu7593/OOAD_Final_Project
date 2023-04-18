@@ -1,0 +1,6 @@
+@echo off
+echo Buidling executable...
+START /B /WAIT python -m PyInstaller src/main.py --onefile --noconsole
+echo Cleaning files/simplifying...
+move "dist\main.exe" ./ & rmdir dist & rmdir /q /s build & del "main.spec"
+echo Executable main.exe built
