@@ -13,3 +13,6 @@ The game window can be launched one of two ways:
 
 # Libraries
 Pygame, PyInstaller (to generate exe), Python Random
+
+# Git Instructions
+Branch individual work: Add, Commit, and Push to origin "HEAD"
