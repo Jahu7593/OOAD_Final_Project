@@ -46,7 +46,7 @@ class Bird(pygame.sprite.Sprite):
                 self.rect.y += int(self.velocity)
 
         # https://www.pygame.org/docs/ref/mouse.html
-        # checking if mouse is clicked
+        # checking if mouse is clicked -> add something here for the main menu
         if (Bird.game_over == False):
             if (pygame.mouse.get_pressed()[0] == 1) and (self.clicked == False):
                 self.clicked = True

@@ -62,6 +62,8 @@ while run:
     # load the background image into the game
     screen.blit(background_img, (0, 0))
 
+    # add main menu here??
+
     bird.bird_group.draw(screen)
     bird.bird_group.update()
 
@@ -86,6 +88,7 @@ while run:
     # x coordinate needs to change so that the ground can move
     screen.blit(ground, (scroll, 768))
 
+    # This checks to see if the bird has collided with the pipe
     if pygame.sprite.groupcollide(bird.bird_group, pipe.pipe_group, False, False) or bird.flappy.rect.top < 0:
         game_over = True
         bird.Bird.game_over = game_over
