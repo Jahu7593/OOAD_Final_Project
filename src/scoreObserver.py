@@ -5,16 +5,16 @@ class Subject:
         self.observers = []
 
     def register_observer(self, observer):
-        print("Im registered")
+        # print("Im registered")
         self.observers.append(observer)
 
     def remove_observer(self, observer):
         self.observers.remove(observer)
 
     def notify_observers(self, scores):
-        print("I call notified")
+        # print("I call notified")
         for observer in self.observers:
-            print("I should be notified here")
+            # print("I should be notified here")
             observer.update(scores)
 
 class Observer:
