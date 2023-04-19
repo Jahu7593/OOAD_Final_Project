@@ -1,15 +1,20 @@
 import pygame
-from pygame.locals import *
-import random
 import bird
 import pipe
 import restart
+import scoreObserver
+
 
 # imports all pygame modules and then initialzes it
 pygame.init()
 
 clock = pygame.time.Clock()
 fps = 60
+
+#make new instance of score observer
+subject = scoreObserver.Subject()
+file_observer = scoreObserver.FileWriter()
+subject.register_observer(file_observer)
 
 # game window
 screen_width = 864
@@ -33,6 +38,8 @@ speed = 4
 # To handle the start of the game
 flying = False
 game_over = False
+#to make sure the score gets recorded
+added = False
 # this means we'll satrt making pipes right away
 last_pipe = pygame.time.get_ticks() - pipe.pipe_frequency
 run = True
@@ -87,6 +94,9 @@ while run:
     screen.blit(ground, (scroll, 768))
 
     if pygame.sprite.groupcollide(bird.bird_group, pipe.pipe_group, False, False) or bird.flappy.rect.top < 0:
+        if not added:
+            subject.notify_observers(score)
+            added = True
         game_over = True
         bird.Bird.game_over = game_over
 
@@ -114,6 +124,7 @@ while run:
         if restart.button.draw() == True:
             # game has been restarted but isn't over
             game_over = False
+            added = False
             bird.Bird.game_over = game_over
             score = reset_game()
 
