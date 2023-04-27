@@ -9,10 +9,9 @@ pygame.init()
 
 # will we need to change this for the observer patter? (if we're doing it)
 
-
 class Bird(pygame.sprite.Sprite):
 
-    flying = False
+    flying = True
     game_over = False
 
     def __init__(self, x, y):
@@ -32,7 +31,7 @@ class Bird(pygame.sprite.Sprite):
 
         # for the physics of the game
         self.velocity = 0
-        self.clicked = False
+        self.clicked = True
 
     def game_physics(self):
 

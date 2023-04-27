@@ -31,9 +31,9 @@ class FileWriter(Observer):
 
     def create_file(self):
         with open(self.filename, "w") as file:
-            file.write("End-of-Game Scores\n\n")
+            file.write("High Scores\n\n")
 
     def update(self, scores):
         with open(self.filename, "a") as file:
-            file.write("New Score: " + str(scores)+"\n")
+            file.write("New High Score: " + str(scores)+"\n")
             file.write("\n")
