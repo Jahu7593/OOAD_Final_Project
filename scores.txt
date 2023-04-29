@@ -1,4 +1,4 @@
-End-of-Game Scores
+High Scores
 
-New Score: 1
+New High Score: 5
 
