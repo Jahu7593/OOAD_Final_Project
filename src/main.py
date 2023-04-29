@@ -34,9 +34,10 @@ class Main():
     global ground
     ground = pygame.image.load('img/ground.png')
 
-    global font, white
+    global font, white, orange
     font = pygame.font.SysFont('Bauhaus 93', 60)
     white = (255, 255, 255)
+    orange = (255, 124, 31)
 
     global game_stopped
     game_stopped = True
@@ -182,22 +183,39 @@ class Main():
 
             b1x = int(screen_width/2 - button_width/2)   #center x
             b1y = title_y + 100    #y below title
+            b2y = b1y + button_height + 30
+            b3y = b1y + 2*button_height + 60
             
-            #Draw/position/color buttons and text
-            self.draw_text("FLAPPY BIRD", font, white, int(screen_width/2 - fb_width/2), title_y)  #draw "Flappy Bird"
+            #initialize buttons
             button1 = pygame.Rect(b1x, b1y, button_width, button_height)   #(x, y, width, height)
-            button2 = pygame.Rect(b1x, b1y + 100, button_width, button_height)
-
+            button2 = pygame.Rect(b1x, b2y, button_width, button_height)
+            button3 = pygame.Rect(b1x, b3y, button_width, button_height)
+            #draw buttons
+            pygame.draw.rect(screen, orange, button1, 0, 15)
+            pygame.draw.rect(screen, orange, button2, 0, 15)
+            pygame.draw.rect(screen, orange, button3, 0, 15)
+            #draw white borders around buttons
+            pygame.draw.rect(screen, white, pygame.Rect(b1x, b1y, button_width, button_height), 5, 15)
+            pygame.draw.rect(screen, white, pygame.Rect(b1x, b1y + button_height + 30, button_width, button_height), 5, 15)
+            pygame.draw.rect(screen, white, pygame.Rect(b1x, b1y + 2*button_height + 60, button_width, button_height), 5, 15)
+            #draw text
+            self.draw_text("FLAPPY BIRD", font, white, int(screen_width/2 - fb_width/2), title_y)  #draw "Flappy Bird" title
+            self.draw_text("Start", font, white, int(screen_width/2 - start_width/2), b1y)  
+            self.draw_text("Options", font, white, int(screen_width/2 - options_width/2), b2y)  
+            self.draw_text("Exit", font, white, int(screen_width/2 - exit_width/2), b3y)  
+            #check for clicks on buttons
             if button1.collidepoint((mx, my)):
                 if click:
+                    click = False
                     return
             if button2.collidepoint((mx, my)):
                 if click:
                     self.options()
-
-            pygame.draw.rect(screen, (255, 124, 31), button1, 0, 15)
-            pygame.draw.rect(screen, (255, 124, 31), button2, 0, 15)
-            pygame.draw.rect(screen, white, pygame.Rect(50, 100, 200, 50), 15, 15)
+            if button3.collidepoint((mx, my)):
+                if click:
+                    return
+            
+            #event listner
             click = False
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
