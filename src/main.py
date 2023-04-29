@@ -34,8 +34,9 @@ class Main():
     global ground
     ground = pygame.image.load('img/ground.png')
 
-    global font, white, orange
+    global font, small_font, white, orange
     font = pygame.font.SysFont('Bauhaus 93', 60)
+    small_font = pygame.font.SysFont('Bauhaus 93', 35)
     white = (255, 255, 255)
     orange = (255, 124, 31)
 
@@ -173,9 +174,9 @@ class Main():
             mx, my = pygame.mouse.get_pos()
             #get width/length of text for centering
             fb_width, fb_height = font.size("FLAPPY BIRD")    
-            start_width, start_height = font.size("Start")
-            options_width, options_height = font.size("Options")
-            exit_width, exit_height = font.size("Exit")
+            start_width, start_height = small_font.size("Start")
+            options_width, options_height = small_font.size("Options")
+            exit_width, exit_height = small_font.size("Exit")
             #Set positions
             button_width = 200
             button_height = 50
@@ -200,9 +201,9 @@ class Main():
             pygame.draw.rect(screen, white, pygame.Rect(b1x, b1y + 2*button_height + 60, button_width, button_height), 5, 15)
             #draw text
             self.draw_text("FLAPPY BIRD", font, white, int(screen_width/2 - fb_width/2), title_y)  #draw "Flappy Bird" title
-            self.draw_text("Start", font, white, int(screen_width/2 - start_width/2), b1y)  
-            self.draw_text("Options", font, white, int(screen_width/2 - options_width/2), b2y)  
-            self.draw_text("Exit", font, white, int(screen_width/2 - exit_width/2), b3y)  
+            self.draw_text("Start", small_font, white, int(screen_width/2 - start_width/2), b1y + 5)  
+            self.draw_text("Options", small_font, white, int(screen_width/2 - options_width/2), b2y + 5)  
+            self.draw_text("Exit", small_font, white, int(screen_width/2 - exit_width/2), b3y + 5)  
             #check for clicks on buttons
             if button1.collidepoint((mx, my)):
                 if click:
