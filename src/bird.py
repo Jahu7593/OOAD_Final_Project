@@ -22,7 +22,7 @@ class Bird(pygame.sprite.Sprite):
         self.index = 0
         # speed of animation
         self.counter = 0
-        for num in range(1, 4):
+        for num in range(1, 3):
             img = pygame.image.load(f'img/Flappy{num}.png')
             self.images.append(img)
         self.image = self.images[self.index]
