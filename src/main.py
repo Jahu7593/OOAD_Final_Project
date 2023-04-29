@@ -253,10 +253,10 @@ class Main():
             b2y = b1y + button_height + 30
             b3y = b1y + 2*button_height + 60
             #initialize buttons
-            left_button1 = pygame.draw.polygon(screen, "black", [[b1x, b1y+(button_height/2)], [b1x-50, b1y+button_height], [b1x-50, b1y]], 0)
-            left_button2 = pygame.draw.polygon(screen, "black", [[100, 100], [0, 200], [200, 200]], 0)
-            right_button1 = pygame.draw.polygon(screen, "black", [[100, 100], [0, 200], [200, 200]], 0)
-            right_button2 = pygame.draw.polygon(screen, "black", [[100, 100], [0, 200], [200, 200]], 0)
+            left_button1 = pygame.draw.polygon(screen, orange, [[b1x-50, b1y+(button_height/2)], [b1x, b1y+button_height], [b1x, b1y]], 0)
+            right_button1 = pygame.draw.polygon(screen, orange, [[b1x+button_width+50, b1y+(button_height/2)], [b1x+button_width, b1y+button_height], [b1x+button_width, b1y]], 0)
+            left_button2 = pygame.draw.polygon(screen, orange, [[b1x-50, b2y+(button_height/2)], [b1x, b2y+button_height], [b1x, b2y]], 0)
+            right_button2 = pygame.draw.polygon(screen, orange, [[b1x+button_width+50, b2y+(button_height/2)], [b1x+button_width, b2y+button_height], [b1x+button_width, b2y]], 0)
             button5 = pygame.Rect(b1x, b3y, button_width, button_height)
             #draw 2 orange backgrounds (for birdname and location)
             pygame.draw.rect(screen, orange, pygame.Rect(b1x, b1y, button_width, button_height), 0, 15)
@@ -273,20 +273,24 @@ class Main():
             self.draw_text("Flappy", small_font, white, int(screen_width/2 - birdname_width/2), b2y + 5)  
             self.draw_text("Back", small_font, white, int(screen_width/2 - back_width/2), b3y + 5)  
             #check for clicks on buttons
-            #if button1.collidepoint((mx, my)):   #Left through MAPS list
-                #if click:
-                    #return
-            #if button2.collidepoint((mx, my)):   #Right through MAPS list
-                #if click:
-                    #return
-            #if button3.collidepoint((mx, my)):   #Left through BIRDS list
-                #if click:
-                    #return
-            #if button4.collidepoint((mx, my)):   #Right through BIRDS list
-                #if click:
-                    #return
+            if left_button1.collidepoint((mx, my)):   #Left through MAPS list
+                if click:
+                    return
+            if right_button1.collidepoint((mx, my)):   #Right through MAPS list
+                if click:
+                    return
+            if left_button2.collidepoint((mx, my)):   #Left through BIRDS list
+                if click:
+                    return
+            if right_button2.collidepoint((mx, my)):   #Right through BIRDS list
+                if click:
+                    return
             if button5.collidepoint((mx, my)):   #Back button returns to main_menu
                 if click:
+                    img = pygame.image.load("img/background.png")  #destroy triangles by drawing over w/ location and bird
+                    screen.blit(img, (0, 0))
+                    bird = pygame.image.load("img/bird1.png")
+                    screen.blit(bird, (100, int(screen_height/2)))
                     return
             
             #event listner
