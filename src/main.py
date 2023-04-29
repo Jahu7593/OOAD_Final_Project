@@ -166,6 +166,54 @@ class Main():
 
         pygame.quit()
 
+    def main_menu(self):
+        while True: # Draw Main Menu
+            #get mouse pointer position
+            mx, my = pygame.mouse.get_pos()
+            #get width/length of text for centering
+            fb_width, fb_height = font.size("FLAPPY BIRD")    
+            start_width, start_height = font.size("Start")
+            options_width, options_height = font.size("Options")
+            exit_width, exit_height = font.size("Exit")
+            #Set positions
+            button_width = 200
+            button_height = 50
+            title_y = int(screen_height/2 - fb_height/2 - 300)
+
+            b1x = int(screen_width/2 - button_width/2)   #center x
+            b1y = title_y + 100    #y below title
+            
+            #Draw/position/color buttons and text
+            self.draw_text("FLAPPY BIRD", font, white, int(screen_width/2 - fb_width/2), title_y)  #draw "Flappy Bird"
+            button1 = pygame.Rect(b1x, b1y, button_width, button_height)   #(x, y, width, height)
+            button2 = pygame.Rect(b1x, b1y + 100, button_width, button_height)
+
+            if button1.collidepoint((mx, my)):
+                if click:
+                    return
+            if button2.collidepoint((mx, my)):
+                if click:
+                    self.options()
+
+            pygame.draw.rect(screen, (255, 124, 31), button1, 0, 15)
+            pygame.draw.rect(screen, (255, 124, 31), button2, 0, 15)
+            pygame.draw.rect(screen, white, pygame.Rect(50, 100, 200, 50), 15, 15)
+            click = False
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    exit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        event.type = pygame.QUIT
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == 1:
+                        click = True
+            pygame.display.update()
+        
+    def options(self):
+        self.draw_text("THIIIIIIIIS", font, white, int(screen_width/2), 500)
+
 
     # Menu
     def menu(self):
@@ -176,7 +224,6 @@ class Main():
 
         
         global game_stopped
-
         while game_stopped:
             self.quit_game()
 
@@ -185,9 +232,9 @@ class Main():
             screen.blit(skyline_image, (0, 0))
             screen.blit(ground_image, (0, 768))
             screen.blit(bird_img, (100, int(screen_height/2)))
+            self.main_menu()
             screen.blit(start_image, (screen_width // 2 - start_image.get_width() // 2,
                                     screen_height // 2 - start_image.get_height() // 2))
-
             # User Input
             user_input = pygame.mouse.get_pressed()
             if user_input[0]:
