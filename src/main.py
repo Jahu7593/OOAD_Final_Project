@@ -15,6 +15,14 @@ class Main():
     global restart_condition
     restart_condition = False
 
+    global bird_selected, location_selected
+    bird_selected = 0
+    location_selected = 0   #indices track which bird/location the player has selected, intialized at 0
+    global location_list
+    location_list = ["City"]   #may want to encapsulate in seperate "Map" or "Location" class later
+    global bird_list
+    bird_list = ["Flappy", "Cessna"]
+
     #make new instance of score observer
     global subject
     subject = scoreObserver.Subject()
@@ -171,6 +179,9 @@ class Main():
 
         pygame.quit()
 
+    def image_to_image():
+        return
+
     def main_menu(self):
         if restart_condition == True:
             btn1_string = "Restart"
@@ -237,12 +248,15 @@ class Main():
         
     def options_menu(self):
         while True: # Draw Options Menu
+            global location_selected, bird_selected   #need global keywork (again) when assigning to global variable in a local scope
+            location_str = location_list[location_selected]
+            bird_str = bird_list[bird_selected]
             #get mouse pointer position
             mx, my = pygame.mouse.get_pos()
             #get width/length of text for centering
             fb_width, fb_height = font.size("FLAPPY BIRD")    
-            location_width, location_height = small_font.size("City")
-            birdname_width, birdname_height = small_font.size("Flappy")
+            location_width, location_height = small_font.size(location_str)
+            birdname_width, birdname_height = small_font.size(bird_str)
             back_width, back_height = small_font.size("Back")
             #Set positions
             button_width = 200
@@ -269,27 +283,40 @@ class Main():
             pygame.draw.rect(screen, white, pygame.Rect(b1x, b1y + 2*button_height + 60, button_width, button_height), 5, 15)
             #draw text
             self.draw_text("FLAPPY BIRD", font, white, int(screen_width/2 - fb_width/2), title_y)  #draw "Flappy Bird" title
-            self.draw_text("City", small_font, white, int(screen_width/2 - location_width/2), b1y + 5)  
-            self.draw_text("Flappy", small_font, white, int(screen_width/2 - birdname_width/2), b2y + 5)  
+            self.draw_text(location_str, small_font, white, int(screen_width/2 - location_width/2), b1y + 5)  
+            self.draw_text(bird_str, small_font, white, int(screen_width/2 - birdname_width/2), b2y + 5)  
             self.draw_text("Back", small_font, white, int(screen_width/2 - back_width/2), b3y + 5)  
             #check for clicks on buttons
             if left_button1.collidepoint((mx, my)):   #Left through MAPS list
                 if click:
-                    return
+                    if(location_selected == 0):
+                        location_selected = len(location_list) - 1
+                    else:
+                        location_selected -= 1
             if right_button1.collidepoint((mx, my)):   #Right through MAPS list
                 if click:
-                    return
+                    if(location_selected == len(location_list)-1):
+                        location_selected = 0
+                    else:
+                        location_selected += 1
             if left_button2.collidepoint((mx, my)):   #Left through BIRDS list
                 if click:
-                    return
+                    if(bird_selected == 0):
+                        bird_selected = len(bird_list) - 1
+                    else:
+                        bird_selected -= 1
             if right_button2.collidepoint((mx, my)):   #Right through BIRDS list
                 if click:
-                    return
+                    if(bird_selected == len(bird_list)-1):
+                        bird_selected = 0
+                    else:
+                        bird_selected += 1
             if button5.collidepoint((mx, my)):   #Back button returns to main_menu
                 if click:
+                    #load the same images as selected previously
                     img = pygame.image.load("img/background.png")  #destroy triangles by drawing over w/ location and bird
                     screen.blit(img, (0, 0))
-                    bird = pygame.image.load("img/bird1.png")
+                    bird = pygame.image.load("img/Flappy1.png")
                     screen.blit(bird, (100, int(screen_height/2)))
                     return
             
@@ -312,7 +339,7 @@ class Main():
     def start(self):
         skyline_image = pygame.image.load("img/background.png")
         ground_image = pygame.image.load("img/ground.png")
-        bird_img = pygame.image.load("img/bird1.png")
+        bird_img = pygame.image.load("img/Flappy1.png")
         start_image = pygame.image.load("img/start.png")
         
         global game_stopped

@@ -10,9 +10,10 @@ pygame.init()
 # will we need to change this for the observer patter? (if we're doing it)
 
 class Bird(pygame.sprite.Sprite):
-
     flying = True
     game_over = False
+    global bird_list
+    bird_list = ["Flappy", "Cessna"]
 
     def __init__(self, x, y):
         # has update and draw built into it
@@ -22,7 +23,7 @@ class Bird(pygame.sprite.Sprite):
         # speed of animation
         self.counter = 0
         for num in range(1, 4):
-            img = pygame.image.load(f'img/bird{num}.png')
+            img = pygame.image.load(f'img/Flappy{num}.png')
             self.images.append(img)
         self.image = self.images[self.index]
         # we use this to set the boundraies of our bird image
@@ -32,6 +33,9 @@ class Bird(pygame.sprite.Sprite):
         # for the physics of the game
         self.velocity = 0
         self.clicked = True
+
+    def getBirdList():
+        return bird_list
 
     def game_physics(self):
 
