@@ -42,11 +42,12 @@ class Main():
     game_stopped = True
 
     # This is to write the score to a file/img
+    @staticmethod
     def draw_text(text, font, text_col, x, y):
         img = font.render(text, True, text_col)
         screen.blit(img, (x, y))
 
-
+    @staticmethod
     def reset_game():
         pipe.pipe_group.empty()
         bird.flappy.rect.x = 100
@@ -54,6 +55,7 @@ class Main():
         score = 0
         return score
 
+    @staticmethod
     def quit_game():
         # Exit Game
         for event in pygame.event.get():
