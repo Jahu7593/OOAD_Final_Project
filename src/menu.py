@@ -14,7 +14,6 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
         self.screen_height = x.screen_height
         self.screen_width = x.screen_width
         self.screen = x.screen
-        print(self.screen_height)
         #init fonts/colors
         global font, small_font, white, orange
         font = pygame.font.SysFont('Bauhaus 93', 60)
@@ -26,8 +25,8 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
         bird_selected = 0   #start w/ standard "Flappy" in standard "City"
         #for now storing locations/birds list here, may want to pass in from elsewhere later
         global locations_list, birds_list
-        locations_list = ["City"]
-        birds_list = ["Flappy"], ["Cessna"]
+        locations_list = ["City", "Desert", "Castle"]
+        birds_list = ["Flappy", "Cessna", "Eagle"]
         
         print("Menu Object Initialized")
 
@@ -122,10 +121,10 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
             b2y = b1y + button_height + 30
             b3y = b1y + 2*button_height + 60
             #initialize buttons
-            left_button1 = pygame.draw.polygon(self.screen, orange, [[b1x-50, b1y+(button_height/2)], [b1x, b1y+button_height], [b1x, b1y]], 0)
-            right_button1 = pygame.draw.polygon(self.screen, orange, [[b1x+button_width+50, b1y+(button_height/2)], [b1x+button_width, b1y+button_height], [b1x+button_width, b1y]], 0)
-            left_button2 = pygame.draw.polygon(self.screen, orange, [[b1x-50, b2y+(button_height/2)], [b1x, b2y+button_height], [b1x, b2y]], 0)
-            right_button2 = pygame.draw.polygon(self.screen, orange, [[b1x+button_width+50, b2y+(button_height/2)], [b1x+button_width, b2y+button_height], [b1x+button_width, b2y]], 0)
+            left_button1 = pygame.draw.polygon(self.screen, orange, [[b1x-50, b1y+(button_height/2)], [b1x-10, b1y+button_height-10], [b1x-10, b1y+10]], 0)
+            right_button1 = pygame.draw.polygon(self.screen, orange, [[b1x+button_width+50, b1y+(button_height/2)], [b1x+button_width+10, b1y+button_height-10], [b1x+button_width+10, b1y+10]], 0)
+            left_button2 = pygame.draw.polygon(self.screen, orange, [[b1x-50, b2y+(button_height/2)], [b1x-10, b2y+button_height-10], [b1x-10, b2y+10]], 0)
+            right_button2 = pygame.draw.polygon(self.screen, orange, [[b1x+button_width+50, b2y+(button_height/2)], [b1x+button_width+10, b2y+button_height-10], [b1x+button_width+10, b2y+10]], 0)
             button5 = pygame.Rect(b1x, b3y, button_width, button_height)
             #draw 2 orange backgrounds (for birdname and location)
             pygame.draw.rect(self.screen, orange, pygame.Rect(b1x, b1y, button_width, button_height), 0, 15)
@@ -136,6 +135,11 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
             pygame.draw.rect(self.screen, white, pygame.Rect(b1x, b1y, button_width, button_height), 5, 15)
             pygame.draw.rect(self.screen, white, pygame.Rect(b1x, b1y + button_height + 30, button_width, button_height), 5, 15)
             pygame.draw.rect(self.screen, white, pygame.Rect(b1x, b1y + 2*button_height + 60, button_width, button_height), 5, 15)
+            #draw white borders around arrows
+            pygame.draw.polygon(self.screen, white, [[b1x-50, b1y+(button_height/2)], [b1x-10, b1y+button_height-10], [b1x-10, b1y+10]], 5)
+            pygame.draw.polygon(self.screen, white, [[b1x+button_width+50, b1y+(button_height/2)], [b1x+button_width+10, b1y+button_height-10], [b1x+button_width+10, b1y+10]], 5)
+            pygame.draw.polygon(self.screen, white, [[b1x-50, b2y+(button_height/2)], [b1x-10, b2y+button_height-10], [b1x-10, b2y+10]], 5)
+            pygame.draw.polygon(self.screen, white, [[b1x+button_width+50, b2y+(button_height/2)], [b1x+button_width+10, b2y+button_height-10], [b1x+button_width+10, b2y+10]], 5)
             #draw text
             self.draw_text("FLAPPY BIRD", font, white, int(self.screen_width/2 - fb_width/2), title_y, self)  #draw "Flappy Bird" title
             self.draw_text(location_str, small_font, white, int(self.screen_width/2 - location_width/2), b1y + 5, self)  

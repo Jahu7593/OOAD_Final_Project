@@ -54,8 +54,7 @@ class Command():
             s.blit(bird_img, (100, int(screen_height/2)))
             self.display_main_menu()
             self.restart_condition = True
-            s.blit(start_image, (screen_width // 2 - start_image.get_width() // 2,
-                                    screen_height // 2 - start_image.get_height() // 2))
+            #s.blit(start_image, (screen_width // 2 - start_image.get_width() // 2, screen_height // 2 - start_image.get_height() // 2))
             # User Input
             user_input = pygame.mouse.get_pressed()
             if user_input[0]:
