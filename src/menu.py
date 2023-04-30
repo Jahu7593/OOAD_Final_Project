@@ -27,6 +27,8 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
         global locations_list, birds_list
         locations_list = ["City", "Desert", "Castle"]
         birds_list = ["Flappy", "Cessna", "Eagle"]
+        global click
+        self.click = False
         
         print("Menu Object Initialized")
 
@@ -76,18 +78,20 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
             self.draw_text("Options", small_font, white, int(self.screen_width/2 - options_width/2), b2y + 5, self)  
             self.draw_text("Exit", small_font, white, int(self.screen_width/2 - exit_width/2), b3y + 5, self)  
             #check for clicks on buttons
+            
             if button1.collidepoint((mx, my)):   #Start button returns to game loop
-                if click:
+                if self.click:
                     return
             if button2.collidepoint((mx, my)):   #Options button opens options menu
-                if click:
+                if self.click:
                     self.options_menu()
             if button3.collidepoint((mx, my)):   #Exit button quits the program (or escape)
-                if click:
-                    event.type = pygame.QUIT
+                if self.click:
+                    pygame.quit()
+                    exit()
             
             #event listner
-            click = False
+            self.click = False
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -97,7 +101,7 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
                         event.type = pygame.QUIT
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:
-                        click = True
+                        self.click = True
             pygame.display.update()
         
     def options_menu(self):

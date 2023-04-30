@@ -146,6 +146,8 @@ class Game(screen.Screen):  #Concrete method for starting/stopping game loop
                     added = False
                     bird.Bird.game_over = game_over
                     score = self.reset_game()
+                    #Return to main menu here...
+                    return   #return to main menu after selecting restart
 
             for event in pygame.event.get():
                 # if someone selects the exit out of the game button
