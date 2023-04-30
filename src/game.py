@@ -3,15 +3,18 @@ import bird
 import pipe
 import restart
 import scoreObserver
+import command
+import screen
 
-class Game():  #Concrete method for starting/stopping game loop
+class Game(screen.Screen):  #Concrete method for starting/stopping game loop
     # imports all pygame modules and then initialzes it
     pygame.init()
-    def __init__(s, self):
-        global screen_height, screen_width, screen
-        screen = s
-        screen_width, screen_height = pygame.display.get_surface().get_size()
-        #init game clock, frames per second
+    #init game clock, frames per second
+    def __init__(self, x):
+        self.screen_height = x.screen_height
+        self.screen_width = x.screen_width
+        self.screen = x.screen
+
         global clock, fps
         clock = pygame.time.Clock()
         fps = 60
@@ -25,21 +28,24 @@ class Game():  #Concrete method for starting/stopping game loop
         background_img = pygame.image.load('img/background.png')
         global ground
         ground = pygame.image.load('img/ground.png')
+        #font & color definitions
+        global font, white
+        font = pygame.font.SysFont('Bauhaus 93', 60)
+        white = (255, 255, 255)
 
-    global game_stopped
-    game_stopped = True
+        print("Game Object Initialized")
     
     # This is to write the score to a file/img
     @staticmethod
-    def draw_text(text, font, text_col, x, y):
+    def draw_text(text, font, text_col, x, y, self):
         img = font.render(text, True, text_col)
-        screen.blit(img, (x, y))
+        self.screen.blit(img, (x, y))
 
-    @staticmethod
-    def reset_game():
+    #@staticmethod
+    def reset_game(self):
         pipe.pipe_group.empty()
         bird.flappy.rect.x = 100
-        bird.flappy.rect.y = int(screen_height / 2)
+        bird.flappy.rect.y = int(self.screen_height / 2)
         score = 0
         return score
 
@@ -76,12 +82,12 @@ class Game():  #Concrete method for starting/stopping game loop
             clock.tick(fps)
 
             # load the background image into the game
-            screen.blit(background_img, (0, 0))
+            self.screen.blit(background_img, (0, 0))
 
-            bird.bird_group.draw(screen)
+            bird.bird_group.draw(self.screen)
             bird.bird_group.update()
 
-            pipe.pipe_group.draw(screen)
+            pipe.pipe_group.draw(self.screen)
 
             # checking the score
             if len(pipe.pipe_group) > 0:
@@ -96,11 +102,11 @@ class Game():  #Concrete method for starting/stopping game loop
                         score += 1
                         pass_pipe = False
 
-            self.draw_text(str(score), font, white, int(screen_width/2), 20)
+            self.draw_text(str(score), font, white, int(self.screen_width/2), 20, self)
 
             # load the ground image into the game (scrolling background)
             # x coordinate needs to change so that the ground can move
-            screen.blit(ground, (scroll, 768))
+            self.screen.blit(ground, (scroll, 768))
 
             if pygame.sprite.groupcollide(bird.bird_group, pipe.pipe_group, False, False) or bird.flappy.rect.top < 0:
                 if not added:
@@ -152,31 +158,3 @@ class Game():  #Concrete method for starting/stopping game loop
             pygame.display.update()
 
         pygame.quit()
-
-    # Menu
-    def start_game(self):
-        skyline_image = pygame.image.load("img/background.png")
-        ground_image = pygame.image.load("img/ground.png")
-        bird_img = pygame.image.load("img/Flappy1.png")
-        start_image = pygame.image.load("img/start.png")
-        
-        global game_stopped
-        while game_stopped:
-            self.quit_game()
-
-            # Draw Menu
-            screen.fill((0, 0, 0))
-            screen.blit(skyline_image, (0, 0))
-            screen.blit(ground_image, (0, 768))
-            screen.blit(bird_img, (100, int(screen_height/2)))
-            self.main_menu()
-            restart_condition = True   #will render "restart" instead of "start" after the first main menu call
-            screen.blit(start_image, (screen_width // 2 - start_image.get_width() // 2,
-                                    screen_height // 2 - start_image.get_height() // 2))
-            # User Input
-            user_input = pygame.mouse.get_pressed()
-            if user_input[0]:
-                bird.clicked = True
-                self.main()
-
-            pygame.display.update()

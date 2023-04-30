@@ -4,16 +4,17 @@ import pipe
 import restart
 import scoreObserver
 import command
+import screen
 
-class Menu():  #Concrete menu implementation, controlled by Command
+class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
     # imports all pygame modules and then initialzes it
     pygame.init()
-    def __init__(screen, self):  #pass in screen variable from Command
-        global screen_height, screen_width
-        screen_width, screen_height = pygame.display.get_surface().get_size()
-        #Restart condition - False only for first menu display
-        global restart_condition
-        restart_condition = False  
+    #Restart condition - False only for first menu display
+    def __init__(self, x):
+        self.screen_height = x.screen_height
+        self.screen_width = x.screen_width
+        self.screen = x.screen
+        print(self.screen_height)
         #init fonts/colors
         global font, small_font, white, orange
         font = pygame.font.SysFont('Bauhaus 93', 60)
@@ -27,12 +28,20 @@ class Menu():  #Concrete menu implementation, controlled by Command
         global locations_list, birds_list
         locations_list = ["City"]
         birds_list = ["Flappy"], ["Cessna"]
+        
+        print("Menu Object Initialized")
+
+    @staticmethod
+    def draw_text(text, font, text_col, x, y, self):
+        img = font.render(text, True, text_col)
+        self.screen.blit(img, (x, y))
     
-    def main_menu(self):
+    def main_menu(self, restart_condition):
         if restart_condition == True:
             btn1_string = "Restart"
         else:
             btn1_string = "Start"
+            restart_condition = True
 
         while True: # Draw Main Menu
             #get mouse pointer position
@@ -45,8 +54,8 @@ class Menu():  #Concrete menu implementation, controlled by Command
             #Set positions
             button_width = 200
             button_height = 50
-            title_y = int(screen_height/2 - fb_height/2 - 300)
-            b1x = int(screen_width/2 - button_width/2)   #center x
+            title_y = int(self.screen_height/2 - fb_height/2 - 300)
+            b1x = int(self.screen_width/2 - button_width/2)   #center x
             b1y = title_y + 100    #y below title
             b2y = b1y + button_height + 30
             b3y = b1y + 2*button_height + 60
@@ -55,18 +64,18 @@ class Menu():  #Concrete menu implementation, controlled by Command
             button2 = pygame.Rect(b1x, b2y, button_width, button_height)
             button3 = pygame.Rect(b1x, b3y, button_width, button_height)
             #draw buttons
-            pygame.draw.rect(screen, orange, button1, 0, 15)
-            pygame.draw.rect(screen, orange, button2, 0, 15)
-            pygame.draw.rect(screen, orange, button3, 0, 15)
+            pygame.draw.rect(self.screen, orange, button1, 0, 15)
+            pygame.draw.rect(self.screen, orange, button2, 0, 15)
+            pygame.draw.rect(self.screen, orange, button3, 0, 15)
             #draw white borders around buttons
-            pygame.draw.rect(screen, white, pygame.Rect(b1x, b1y, button_width, button_height), 5, 15)
-            pygame.draw.rect(screen, white, pygame.Rect(b1x, b1y + button_height + 30, button_width, button_height), 5, 15)
-            pygame.draw.rect(screen, white, pygame.Rect(b1x, b1y + 2*button_height + 60, button_width, button_height), 5, 15)
+            pygame.draw.rect(self.screen, white, pygame.Rect(b1x, b1y, button_width, button_height), 5, 15)
+            pygame.draw.rect(self.screen, white, pygame.Rect(b1x, b1y + button_height + 30, button_width, button_height), 5, 15)
+            pygame.draw.rect(self.screen, white, pygame.Rect(b1x, b1y + 2*button_height + 60, button_width, button_height), 5, 15)
             #draw text
-            self.draw_text("FLAPPY BIRD", font, white, int(screen_width/2 - fb_width/2), title_y)  #draw "Flappy Bird" title
-            self.draw_text(btn1_string, small_font, white, int(screen_width/2 - start_width/2), b1y + 5)  
-            self.draw_text("Options", small_font, white, int(screen_width/2 - options_width/2), b2y + 5)  
-            self.draw_text("Exit", small_font, white, int(screen_width/2 - exit_width/2), b3y + 5)  
+            self.draw_text("FLAPPY BIRD", font, white, int(self.screen_width/2 - fb_width/2), title_y, self)  #draw "Flappy Bird" title
+            self.draw_text(btn1_string, small_font, white, int(self.screen_width/2 - start_width/2), b1y + 5, self)  
+            self.draw_text("Options", small_font, white, int(self.screen_width/2 - options_width/2), b2y + 5, self)  
+            self.draw_text("Exit", small_font, white, int(self.screen_width/2 - exit_width/2), b3y + 5, self)  
             #check for clicks on buttons
             if button1.collidepoint((mx, my)):   #Start button returns to game loop
                 if click:
@@ -107,31 +116,31 @@ class Menu():  #Concrete menu implementation, controlled by Command
             #Set positions
             button_width = 200
             button_height = 50
-            title_y = int(screen_height/2 - fb_height/2 - 300)
-            b1x = int(screen_width/2 - button_width/2)   #center x
+            title_y = int(self.screen_height/2 - fb_height/2 - 300)
+            b1x = int(self.screen_width/2 - button_width/2)   #center x
             b1y = title_y + 100    #y below title
             b2y = b1y + button_height + 30
             b3y = b1y + 2*button_height + 60
             #initialize buttons
-            left_button1 = pygame.draw.polygon(screen, orange, [[b1x-50, b1y+(button_height/2)], [b1x, b1y+button_height], [b1x, b1y]], 0)
-            right_button1 = pygame.draw.polygon(screen, orange, [[b1x+button_width+50, b1y+(button_height/2)], [b1x+button_width, b1y+button_height], [b1x+button_width, b1y]], 0)
-            left_button2 = pygame.draw.polygon(screen, orange, [[b1x-50, b2y+(button_height/2)], [b1x, b2y+button_height], [b1x, b2y]], 0)
-            right_button2 = pygame.draw.polygon(screen, orange, [[b1x+button_width+50, b2y+(button_height/2)], [b1x+button_width, b2y+button_height], [b1x+button_width, b2y]], 0)
+            left_button1 = pygame.draw.polygon(self.screen, orange, [[b1x-50, b1y+(button_height/2)], [b1x, b1y+button_height], [b1x, b1y]], 0)
+            right_button1 = pygame.draw.polygon(self.screen, orange, [[b1x+button_width+50, b1y+(button_height/2)], [b1x+button_width, b1y+button_height], [b1x+button_width, b1y]], 0)
+            left_button2 = pygame.draw.polygon(self.screen, orange, [[b1x-50, b2y+(button_height/2)], [b1x, b2y+button_height], [b1x, b2y]], 0)
+            right_button2 = pygame.draw.polygon(self.screen, orange, [[b1x+button_width+50, b2y+(button_height/2)], [b1x+button_width, b2y+button_height], [b1x+button_width, b2y]], 0)
             button5 = pygame.Rect(b1x, b3y, button_width, button_height)
             #draw 2 orange backgrounds (for birdname and location)
-            pygame.draw.rect(screen, orange, pygame.Rect(b1x, b1y, button_width, button_height), 0, 15)
-            pygame.draw.rect(screen, orange, pygame.Rect(b1x, b1y + button_height + 30, button_width, button_height), 0, 15)
+            pygame.draw.rect(self.screen, orange, pygame.Rect(b1x, b1y, button_width, button_height), 0, 15)
+            pygame.draw.rect(self.screen, orange, pygame.Rect(b1x, b1y + button_height + 30, button_width, button_height), 0, 15)
             #draw button 5 (back)
-            pygame.draw.rect(screen, orange, button5, 0, 15)
+            pygame.draw.rect(self.screen, orange, button5, 0, 15)
             #draw white borders around buttons
-            pygame.draw.rect(screen, white, pygame.Rect(b1x, b1y, button_width, button_height), 5, 15)
-            pygame.draw.rect(screen, white, pygame.Rect(b1x, b1y + button_height + 30, button_width, button_height), 5, 15)
-            pygame.draw.rect(screen, white, pygame.Rect(b1x, b1y + 2*button_height + 60, button_width, button_height), 5, 15)
+            pygame.draw.rect(self.screen, white, pygame.Rect(b1x, b1y, button_width, button_height), 5, 15)
+            pygame.draw.rect(self.screen, white, pygame.Rect(b1x, b1y + button_height + 30, button_width, button_height), 5, 15)
+            pygame.draw.rect(self.screen, white, pygame.Rect(b1x, b1y + 2*button_height + 60, button_width, button_height), 5, 15)
             #draw text
-            self.draw_text("FLAPPY BIRD", font, white, int(screen_width/2 - fb_width/2), title_y)  #draw "Flappy Bird" title
-            self.draw_text(location_str, small_font, white, int(screen_width/2 - location_width/2), b1y + 5)  
-            self.draw_text(bird_str, small_font, white, int(screen_width/2 - birdname_width/2), b2y + 5)  
-            self.draw_text("Back", small_font, white, int(screen_width/2 - back_width/2), b3y + 5)  
+            self.draw_text("FLAPPY BIRD", font, white, int(self.screen_width/2 - fb_width/2), title_y, self)  #draw "Flappy Bird" title
+            self.draw_text(location_str, small_font, white, int(self.screen_width/2 - location_width/2), b1y + 5, self)  
+            self.draw_text(bird_str, small_font, white, int(self.screen_width/2 - birdname_width/2), b2y + 5, self)  
+            self.draw_text("Back", small_font, white, int(self.screen_width/2 - back_width/2), b3y + 5, self)  
             #check for clicks on buttons
             if left_button1.collidepoint((mx, my)):   #Left through MAPS list
                 if click:
@@ -161,9 +170,9 @@ class Menu():  #Concrete menu implementation, controlled by Command
                 if click:
                     #load the same images as selected previously
                     img = pygame.image.load("img/background.png")  #destroy triangles by drawing over w/ location and bird
-                    screen.blit(img, (0, 0))
+                    self.screen.blit(img, (0, 0))
                     bird = pygame.image.load("img/Flappy1.png")
-                    screen.blit(bird, (100, int(screen_height/2)))
+                    self.screen.blit(bird, (100, int(self.screen_height/2)))
                     return
             
             #event listner

@@ -5,31 +5,61 @@ import restart
 import scoreObserver
 import menu
 import game
+import screen
 
 class Command():
     # imports all pygame modules and then initialzes it
-    pygame.init()
+    
     def __init__(self):
-        screen_width = 864
-        screen_height = 936
-        #init screen object
-        global screen
-        screen = pygame.display.set_mode((screen_width, screen_height))  #this needs to be passed down to "Menu" and "Game"
-        restart.screen = screen
+        global restart_condition
+        restart_condition = False  
+
         pygame.display.set_caption('Flappy Bird Game')
         
         #init all relevant objects
-        global m, g
-        m = menu.Menu(screen)
-        g = game.Game(screen)
+        global m, g, scr
+        scr = screen.Screen()
+        m = menu.Menu(scr)
+        g = game.Game(scr)
 
+        global screen_height, screen_width, s
+        screen_width = scr.screen_width
+        screen_height = scr.screen_height
+        s = scr.screen
+
+        global game_stopped
+        game_stopped = True
     
     def display_main_menu(self):  #access Menu to display main menu
-        m.main_menu()
+        m.main_menu(restart_condition)
         return
     
     def update_menu(self):   #access Game to update menu selection (if necessary)
         return
     
     def start_game(self):
-        g.start_game()
+        skyline_image = pygame.image.load("img/background.png")
+        ground_image = pygame.image.load("img/ground.png")
+        bird_img = pygame.image.load("img/Flappy1.png")
+        start_image = pygame.image.load("img/start.png")
+        
+        global game_stopped
+        while game_stopped:
+            g.quit_game()
+
+            # Draw Menu
+            s.fill((0, 0, 0))
+            s.blit(skyline_image, (0, 0))
+            s.blit(ground_image, (0, 768))
+            s.blit(bird_img, (100, int(screen_height/2)))
+            self.display_main_menu()
+            self.restart_condition = True
+            s.blit(start_image, (screen_width // 2 - start_image.get_width() // 2,
+                                    screen_height // 2 - start_image.get_height() // 2))
+            # User Input
+            user_input = pygame.mouse.get_pressed()
+            if user_input[0]:
+                bird.clicked = True
+                g.main()
+
+            pygame.display.update()
