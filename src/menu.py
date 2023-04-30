@@ -49,6 +49,10 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
             mx, my = pygame.mouse.get_pos()
             #get width/length of text for centering
             fb_width, fb_height = font.size("FLAPPY BIRD")    
+            currentscore_width, currentscore_height = small_font.size("Recent Score")
+            highscore_width, highscore_height = small_font.size("High Score")
+            cs_width, cs_height = font.size(str(curr_score))
+            hs_width, hs_height = font.size(str(high_score))
             start_width, start_height = small_font.size(btn1_string)
             options_width, options_height = small_font.size("Options")
             exit_width, exit_height = small_font.size("Exit")
@@ -62,8 +66,10 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
             b2y = b1y + button_height + 30
             b3y = b1y + 2*button_height + 60
             #Display High Scores
-            self.draw_text(str(curr_score), font, white, int(self.screen_width/2 - fb_width/2)-100, score_y, self)  #draw "Flappy Bird" title
-            self.draw_text(str(high_score), font, white, int(self.screen_width/2 - fb_width/2)+100, score_y, self)  #draw "Flappy Bird" title
+            self.draw_text("Recent Score", small_font, white, int(self.screen_width/2 - currentscore_width/2)-150, score_y-15, self)  
+            self.draw_text("High Score", small_font, white, int(self.screen_width/2 - highscore_width/2)+150, score_y-15, self)  
+            self.draw_text(str(curr_score), font, white, int(self.screen_width/2 - cs_width/2)-150, score_y+15, self)  
+            self.draw_text(str(high_score), font, white, int(self.screen_width/2 - hs_width/2)+150, score_y+15, self)  
             #initialize buttons
             button1 = pygame.Rect(b1x, b1y, button_width, button_height)   #(x, y, width, height)
             button2 = pygame.Rect(b1x, b2y, button_width, button_height)
@@ -114,6 +120,7 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
             pygame.display.update()
         
     def options_menu(self):
+        self.click = False
         while True: # Draw Options Menu
             global location_selected, bird_selected   #need global keywork (again) when assigning to global variable in a local scope
             location_str = locations_list[location_selected]
@@ -128,9 +135,9 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
             #Set positions
             button_width = 200
             button_height = 50
-            title_y = int(self.screen_height/2 - fb_height/2 - 300)
+            title_y = int(self.screen_height/2 - fb_height/2 - 400)
             b1x = int(self.screen_width/2 - button_width/2)   #center x
-            b1y = title_y + 100    #y below title
+            b1y = title_y + 200    #y below title
             b2y = b1y + button_height + 30
             b3y = b1y + 2*button_height + 60
             #initialize buttons
@@ -160,31 +167,31 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
             self.draw_text("Back", small_font, white, int(self.screen_width/2 - back_width/2), b3y + 5, self)  
             #check for clicks on buttons
             if left_button1.collidepoint((mx, my)):   #Left through MAPS list
-                if click:
+                if self.click:
                     if(location_selected == 0):
                         location_selected = len(locations_list) - 1
                     else:
                         location_selected -= 1
             if right_button1.collidepoint((mx, my)):   #Right through MAPS list
-                if click:
+                if self.click:
                     if(location_selected == len(locations_list)-1):
                         location_selected = 0
                     else:
                         location_selected += 1
             if left_button2.collidepoint((mx, my)):   #Left through BIRDS list
-                if click:
+                if self.click:
                     if(bird_selected == 0):
                         bird_selected = len(birds_list) - 1
                     else:
                         bird_selected -= 1
             if right_button2.collidepoint((mx, my)):   #Right through BIRDS list
-                if click:
+                if self.click:
                     if(bird_selected == len(birds_list)-1):
                         bird_selected = 0
                     else:
                         bird_selected += 1
             if button5.collidepoint((mx, my)):   #Back button returns to main_menu
-                if click:
+                if self.click:
                     #load the same images as selected previously
                     img = pygame.image.load("img/background.png")  #destroy triangles by drawing over w/ location and bird
                     self.screen.blit(img, (0, 0))
@@ -193,7 +200,7 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
                     return
             
             #event listner
-            click = False
+            self.click = False
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -203,6 +210,6 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
                         event.type = pygame.QUIT
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:
-                        click = True
+                        self.click = True
             pygame.display.update()
 
