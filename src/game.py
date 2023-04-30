@@ -32,6 +32,7 @@ class Game(screen.Screen):  #Concrete method for starting/stopping game loop
         global font, white
         font = pygame.font.SysFont('Bauhaus 93', 60)
         white = (255, 255, 255)
+        self.high_score = 0
 
         print("Game Object Initialized")
     
@@ -71,7 +72,6 @@ class Game(screen.Screen):  #Concrete method for starting/stopping game loop
         run = True
         score = 0
         pass_pipe = False
-        high_score = 0
 
         # we want to run the game until someone exits out of it
         while run:
@@ -136,9 +136,9 @@ class Game(screen.Screen):  #Concrete method for starting/stopping game loop
 
             # checking if the game is over or we need to reset
             if game_over == True:
-                if high_score < score:
-                    high_score = score
-                    subject.notify_observers(high_score)
+                if self.high_score < score:
+                    self.high_score = score
+                    subject.notify_observers(self.high_score)
                     # print("new high score", high_score)
                 if restart.button.draw() == True:
                     # game has been restarted but isn't over
@@ -148,7 +148,7 @@ class Game(screen.Screen):  #Concrete method for starting/stopping game loop
                     curr_score = score
                     score = self.reset_game()
                     #Return to main menu here...
-                    return curr_score, high_score  #return to main menu with current score, after selecting restart
+                    return curr_score, self.high_score  #return to main menu with current score, after selecting restart
 
             for event in pygame.event.get():
                 # if someone selects the exit out of the game button

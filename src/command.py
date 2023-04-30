@@ -37,9 +37,6 @@ class Command():
         m.main_menu(restart_condition, self.curr_score, self.high_score)
         return
     
-    def update_menu(self):   #access Game to update menu selection (if necessary)
-        return
-    
     def start_game(self):
         skyline_image = pygame.image.load("img/background.png")
         ground_image = pygame.image.load("img/ground.png")
