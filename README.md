@@ -10,6 +10,7 @@ We would like to thank Coding with Russ for providing the basic outline of our c
 The game window can be launched one of two ways:
 1 - Run "python src/main.py"
 2 - Run ".\cmd.bat" to generate an executable file "main.exe" which will open the game window (may take 10-20 seconds to load)
+!! Beware of double clicking, some functionalities are clickable before rendering !!
 
 ## Libraries
 Pygame, PyInstaller (to generate exe), Python Random

@@ -37,7 +37,7 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
         img = font.render(text, True, text_col)
         self.screen.blit(img, (x, y))
     
-    def main_menu(self, restart_condition):
+    def main_menu(self, restart_condition, curr_score, high_score):
         if restart_condition == True:
             btn1_string = "Restart"
         else:
@@ -55,11 +55,15 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
             #Set positions
             button_width = 200
             button_height = 50
-            title_y = int(self.screen_height/2 - fb_height/2 - 300)
+            title_y = int(self.screen_height/2 - fb_height/2 - 400)
             b1x = int(self.screen_width/2 - button_width/2)   #center x
-            b1y = title_y + 100    #y below title
+            score_y = title_y + 100
+            b1y = score_y + 100    #y below title
             b2y = b1y + button_height + 30
             b3y = b1y + 2*button_height + 60
+            #Display High Scores
+            self.draw_text(str(curr_score), font, white, int(self.screen_width/2 - fb_width/2)-100, score_y, self)  #draw "Flappy Bird" title
+            self.draw_text(str(high_score), font, white, int(self.screen_width/2 - fb_width/2)+100, score_y, self)  #draw "Flappy Bird" title
             #initialize buttons
             button1 = pygame.Rect(b1x, b1y, button_width, button_height)   #(x, y, width, height)
             button2 = pygame.Rect(b1x, b2y, button_width, button_height)
@@ -87,6 +91,7 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
                     self.options_menu()
             if button3.collidepoint((mx, my)):   #Exit button quits the program (or escape)
                 if self.click:
+                    print("Quitting via Exit")
                     pygame.quit()
                     exit()
             
@@ -94,11 +99,15 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
             self.click = False
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
+                    print("Quitting via event type QUIT")
                     pygame.quit()
                     exit()
+
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
-                        event.type = pygame.QUIT
+                        print("Quitting via Escape")
+                        pygame.quit()
+                        exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:
                         self.click = True
