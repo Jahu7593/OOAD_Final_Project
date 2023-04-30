@@ -38,9 +38,9 @@ class Command():
         return
     
     def start_game(self):
-        skyline_image = pygame.image.load("img/background.png")
+        skyline_image = pygame.image.load("img/city.png")
         ground_image = pygame.image.load("img/ground.png")
-        bird_img = pygame.image.load("img/Flappy1.png")
+        bird_img = pygame.image.load("img/flappy1.png")
         #start_image = pygame.image.load("img/start.png")
         
         global game_stopped
@@ -48,10 +48,11 @@ class Command():
             g.quit_game()
 
             # Draw Menu
-            s.fill((0, 0, 0))
+            s.fill((0, 0, 0))  #s is screen
             s.blit(skyline_image, (0, 0))
             s.blit(ground_image, (0, 768))
             s.blit(bird_img, (100, int(screen_height/2)))
+            m.click = False
             self.display_main_menu()
             self.restart_condition = True
             #s.blit(start_image, (screen_width // 2 - start_image.get_width() // 2, screen_height // 2 - start_image.get_height() // 2))
@@ -60,5 +61,4 @@ class Command():
             if user_input[0]:
                 bird.clicked = True
                 self.curr_score, self.high_score = g.main()  #get current score\high score from running main (game)
-                #need a different way to obtain high score (pull from txt or observer)
             pygame.display.update()

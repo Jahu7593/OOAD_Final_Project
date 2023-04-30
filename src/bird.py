@@ -12,8 +12,6 @@ pygame.init()
 class Bird(pygame.sprite.Sprite):
     flying = True
     game_over = False
-    global bird_list
-    bird_list = ["Flappy", "Cessna"]
 
     def __init__(self, x, y):
         # has update and draw built into it
@@ -23,7 +21,7 @@ class Bird(pygame.sprite.Sprite):
         # speed of animation
         self.counter = 0
         for num in range(1, 3):
-            img = pygame.image.load(f'img/Flappy{num}.png')
+            img = pygame.image.load(f'img/flappy{num}.png')
             self.images.append(img)
         self.image = self.images[self.index]
         # we use this to set the boundraies of our bird image

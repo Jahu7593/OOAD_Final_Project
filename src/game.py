@@ -25,7 +25,7 @@ class Game(screen.Screen):  #Concrete method for starting/stopping game loop
         subject.register_observer(file_observer)
         # load default background images
         global background_img
-        background_img = pygame.image.load('img/background.png')
+        background_img = pygame.image.load('img/city.png')
         global ground
         ground = pygame.image.load('img/ground.png')
         #font & color definitions

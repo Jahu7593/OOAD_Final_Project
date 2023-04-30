@@ -193,9 +193,9 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
             if button5.collidepoint((mx, my)):   #Back button returns to main_menu
                 if self.click:
                     #load the same images as selected previously
-                    img = pygame.image.load("img/background.png")  #destroy triangles by drawing over w/ location and bird
+                    img = pygame.image.load("img/city.png")  #destroy triangles by drawing over w/ location and bird
                     self.screen.blit(img, (0, 0))
-                    bird = pygame.image.load("img/Flappy1.png")
+                    bird = pygame.image.load("img/flappy1.png")
                     self.screen.blit(bird, (100, int(self.screen_height/2)))
                     return
             
