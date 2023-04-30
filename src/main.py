@@ -5,10 +5,10 @@ class Main():  #acts as INVOKER to command class
     # imports all pygame modules and then initialzes it
     pygame.init()
     
-    def startGame(self):
+    def launch(self):
         c = command.Command()
         c.start_game()
 
 obj = Main()
-obj.startGame()
+obj.launch()
     

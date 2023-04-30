@@ -35,4 +35,4 @@ class Button():
         return action
 
 
-button = Button(screen_width // 2 - 50, screen_height // 2 - 100,  button_img)
+button = Button(screen_width // 2 - 50, screen_height // 2 - 200,  button_img)

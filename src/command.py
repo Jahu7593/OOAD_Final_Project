@@ -22,6 +22,9 @@ class Command():
         m = menu.Menu(scr)
         g = game.Game(scr)
 
+        self.curr_score = 0
+        self.high_score = 0
+
         global screen_height, screen_width, s
         screen_width = scr.screen_width
         screen_height = scr.screen_height
@@ -31,7 +34,7 @@ class Command():
         game_stopped = True
     
     def display_main_menu(self):  #access Menu to display main menu
-        m.main_menu(restart_condition)
+        m.main_menu(restart_condition, self.curr_score, self.high_score)
         return
     
     def update_menu(self):   #access Game to update menu selection (if necessary)
@@ -41,7 +44,7 @@ class Command():
         skyline_image = pygame.image.load("img/background.png")
         ground_image = pygame.image.load("img/ground.png")
         bird_img = pygame.image.load("img/Flappy1.png")
-        start_image = pygame.image.load("img/start.png")
+        #start_image = pygame.image.load("img/start.png")
         
         global game_stopped
         while game_stopped:
@@ -59,6 +62,6 @@ class Command():
             user_input = pygame.mouse.get_pressed()
             if user_input[0]:
                 bird.clicked = True
-                g.main()
-
+                self.curr_score, self.high_score = g.main()  #get current score\high score from running main (game)
+                #need a different way to obtain high score (pull from txt or observer)
             pygame.display.update()
