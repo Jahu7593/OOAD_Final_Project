@@ -24,7 +24,7 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
         self.bird_selected = 0   #start w/ standard "Flappy" in standard "City"
         #for now storing locations/birds list here, may want to pass in from elsewhere later
         self.locations_list = ["City", "Desert", "Jungle", "Beach", "Colorado", "Dunes", "Hills", "Egypt"]
-        self.birds_list = ["Flappy", "Cessna", "Eagle"]
+        self.birds_list = ["Flappy", "Cessna", "Jet Flappy"]
         global click
         self.click = False
         
