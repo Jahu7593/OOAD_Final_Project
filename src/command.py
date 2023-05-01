@@ -1,5 +1,5 @@
 import pygame
-import bird
+# import bird
 import pipe
 import restart
 import scoreObserver
@@ -46,11 +46,11 @@ class Command():
             m.click = False
             self.display_main_menu()
             self.restart_condition = True
-            bg_img = m.display_images()    #ensures that whatever image selected from menu is displayed to play
+            bg_img, bird_img = m.display_images()    #ensures that whatever image selected from menu is displayed to play
             #s.blit(start_image, (screen_width // 2 - start_image.get_width() // 2, screen_height // 2 - start_image.get_height() // 2))
             # User Input
             user_input = pygame.mouse.get_pressed()
             if user_input[0]:
-                bird.clicked = True
-                self.curr_score, self.high_score = g.main(bg_img)  #get current score\high score from running main (game), pass in selected image
+                # bird.clicked = True
+                self.curr_score, self.high_score = g.main(bg_img, bird_img)  #get current score\high score from running main (game), pass in selected image
             pygame.display.update()

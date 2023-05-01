@@ -58,7 +58,14 @@ class Game(screen.Screen):  #Concrete method for starting/stopping game loop
                 pygame.quit()
                 exit()
 
-    def main(self, bg_img):
+    def main(self, bg_img, bird_str):
+
+        bird_group = pygame.sprite.Group()
+        bird.bird_group = bird_group
+        flappy = bird.Bird(100, int(936/2), bird_str)
+        bird.flappy = flappy
+        bird_group.add(flappy)
+
         scroll = 0
         # how many pixels the ground moves
         speed = 4
@@ -84,21 +91,23 @@ class Game(screen.Screen):  #Concrete method for starting/stopping game loop
             # load the background image into the game
             self.screen.blit(bg_img, (0, 0))
 
-            bird.bird_group.draw(self.screen)
-            bird.bird_group.update()
+            # bird.bird_selected = bird_str
+            bird.bird_choice = bird_str
+            bird_group.draw(self.screen)
+            bird_group.update()
 
             pipe.pipe_group.draw(self.screen)
 
             # checking the score
             if len(pipe.pipe_group) > 0:
                 # checking to see if bird has passed through the left hand side of the pipe
-                if bird.bird_group.sprites()[0].rect.left > pipe.pipe_group.sprites()[0].rect.left\
-                        and bird.bird_group.sprites()[0].rect.right < pipe.pipe_group.sprites()[0].rect.right\
+                if bird_group.sprites()[0].rect.left > pipe.pipe_group.sprites()[0].rect.left\
+                        and bird_group.sprites()[0].rect.right < pipe.pipe_group.sprites()[0].rect.right\
                         and pass_pipe == False:
                     pass_pipe = True
                 if pass_pipe == True:
                     # Has the bird exited the pipe?
-                    if bird.bird_group.sprites()[0].rect.left > pipe.pipe_group.sprites()[0].rect.right:
+                    if bird_group.sprites()[0].rect.left > pipe.pipe_group.sprites()[0].rect.right:
                         score += 1
                         pass_pipe = False
 
@@ -108,7 +117,7 @@ class Game(screen.Screen):  #Concrete method for starting/stopping game loop
             # x coordinate needs to change so that the ground can move
             self.screen.blit(ground, (scroll, 768))
 
-            if pygame.sprite.groupcollide(bird.bird_group, pipe.pipe_group, False, False) or bird.flappy.rect.top < 0:
+            if pygame.sprite.groupcollide(bird_group, pipe.pipe_group, False, False) or bird.flappy.rect.top < 0:
                 if not added:
                     # subject.notify_observers(score)
                     added = True

@@ -1,5 +1,5 @@
 import pygame
-import bird
+# import bird
 import pipe
 import restart
 import scoreObserver
@@ -24,7 +24,7 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
         self.bird_selected = 0   #start w/ standard "Flappy" in standard "City"
         #for now storing locations/birds list here, may want to pass in from elsewhere later
         self.locations_list = ["City", "Desert", "Jungle", "Beach", "Colorado", "Dunes", "Hills", "Egypt"]
-        self.birds_list = ["Flappy", "Cessna", "Jet Flappy"]
+        self.birds_list = ["Yellow", "Red", "Blue"]
         global click
         self.click = False
         
@@ -41,13 +41,18 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
         bg_img = pygame.transform.scale(bg_img, (864, 768))
 
         ground_img = pygame.image.load("img/ground.png")
-        flappy1_img = pygame.image.load("img/flappy1.png")
+
+        # selection for the flappy bird image
+        bird_str = "img/" + self.birds_list[self.bird_selected].lower() + "_1.png"
+        bird_img = pygame.image.load(bird_str)
+        # bird.bird_selected = self.birds_list[self.bird_selected].lower()
+        # flappy1_img = pygame.image.load("img/flappy1.png")
 
         self.screen.fill((0, 0, 0))  #s is screen    #city is 864 x 768
         self.screen.blit(bg_img, (0, 0))
         self.screen.blit(ground_img, (0, 768))
-        self.screen.blit(flappy1_img, (100, int(self.screen_height/2)))
-        return bg_img
+        self.screen.blit(bird_img, (100, int(self.screen_height/2)))
+        return bg_img, self.birds_list[self.bird_selected].lower()
     
     def main_menu(self, restart_condition, curr_score, high_score):
         if restart_condition == True:

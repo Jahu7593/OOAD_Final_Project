@@ -8,12 +8,15 @@ pygame.init()
 # https://www.pygame.org/docs/ref/sprite.html
 
 # will we need to change this for the observer patter? (if we're doing it)
+bird_choice = ""
+# bird_str = "img/1" + self.birds_list[self.bird_selected].lower() + ".png"
+# bird_img = pygame.image.load(bird_str)
 
 class Bird(pygame.sprite.Sprite):
     flying = True
     game_over = False
 
-    def __init__(self, x, y):
+    def __init__(self, x, y, bird_selected):
         # has update and draw built into it
         pygame.sprite.Sprite.__init__(self)
         self.images = []
@@ -21,7 +24,9 @@ class Bird(pygame.sprite.Sprite):
         # speed of animation
         self.counter = 0
         for num in range(1, 3):
-            img = pygame.image.load(f'img/flappy{num}.png')
+            # "img/1" + self.birds_list[self.bird_selected].lower() + ".png"
+            bird_str = "img/" + bird_selected + "_" + str(num) + ".png"
+            img = pygame.image.load(bird_str)
             self.images.append(img)
         self.image = self.images[self.index]
         # we use this to set the boundraies of our bird image
@@ -32,8 +37,8 @@ class Bird(pygame.sprite.Sprite):
         self.velocity = 0
         self.clicked = True
 
-    def getBirdList():
-        return bird_list
+    # def getBirdList():
+    #     return bird_list
 
     def game_physics(self):
 
@@ -84,6 +89,6 @@ class Bird(pygame.sprite.Sprite):
                 self.images[self.index], -90)
 
 
-bird_group = pygame.sprite.Group()
-flappy = Bird(100, int(936/2))
-bird_group.add(flappy)
+# bird_group = pygame.sprite.Group()
+# flappy = Bird(100, int(936/2), bird_choice)
+# bird_group.add(flappy)
