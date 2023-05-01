@@ -20,13 +20,11 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
         small_font = pygame.font.SysFont('Bauhaus 93', 35)
         white = (255, 255, 255)
         orange = (255, 124, 31)
-        global location_selected, bird_selected
-        location_selected = 0
-        bird_selected = 0   #start w/ standard "Flappy" in standard "City"
+        self.location_selected = 0
+        self.bird_selected = 0   #start w/ standard "Flappy" in standard "City"
         #for now storing locations/birds list here, may want to pass in from elsewhere later
-        global locations_list, birds_list
-        locations_list = ["City", "Desert", "Jungle", "Beach"]
-        birds_list = ["Flappy", "Cessna", "Eagle"]
+        self.locations_list = ["City", "Desert", "Jungle", "Beach"]
+        self.birds_list = ["Flappy", "Cessna", "Eagle"]
         global click
         self.click = False
         
@@ -46,7 +44,7 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
         return city_img, ground_img, flappy1_img
     
     def display_images(self):   #function for each initial menu loading
-        bg_str = "img/" + locations_list[location_selected].lower() + ".png"   #selects current background image
+        bg_str = "img/" + self.locations_list[self.location_selected].lower() + ".png"   #selects current background image
         bg_img = pygame.image.load(bg_str)
         ground_img = pygame.image.load("img/ground.png")
         flappy1_img = pygame.image.load("img/flappy1.png")
@@ -55,6 +53,7 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
         self.screen.blit(bg_img, (0, 0))
         self.screen.blit(ground_img, (0, 768))
         self.screen.blit(flappy1_img, (100, int(self.screen_height/2)))
+        return bg_img
     
     def main_menu(self, restart_condition, curr_score, high_score):
         if restart_condition == True:
@@ -141,9 +140,8 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
     def options_menu(self):
         self.click = False
         while True: # Draw Options Menu
-            global location_selected, bird_selected   #need global keywork (again) when assigning to global variable in a local scope
-            location_str = locations_list[location_selected]
-            bird_str = birds_list[bird_selected]
+            location_str = self.locations_list[self.location_selected]
+            bird_str = self.birds_list[self.bird_selected]
             #get mouse pointer position
             mx, my = pygame.mouse.get_pos()
             #get width/length of text for centering
@@ -187,32 +185,32 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
             #check for clicks on buttons
             if left_button1.collidepoint((mx, my)):   #Left through MAPS list
                 if self.click:
-                    if(location_selected == 0):
-                        location_selected = len(locations_list) - 1
+                    if(self.location_selected == 0):
+                        self.location_selected = len(self.locations_list) - 1
                     else:
-                        location_selected -= 1
+                        self.location_selected -= 1
                     self.display_images()
                     self.options_menu()
             if right_button1.collidepoint((mx, my)):   #Right through MAPS list
                 if self.click:
-                    if(location_selected == len(locations_list)-1):
-                        location_selected = 0
+                    if(self.location_selected == len(self.locations_list)-1):
+                        self.location_selected = 0
                     else:
-                        location_selected += 1
+                        self.location_selected += 1
                     self.display_images()
                     self.options_menu()
             if left_button2.collidepoint((mx, my)):   #Left through BIRDS list
                 if self.click:
-                    if(bird_selected == 0):
-                        bird_selected = len(birds_list) - 1
+                    if(self.bird_selected == 0):
+                        self.bird_selected = len(self.birds_list) - 1
                     else:
-                        bird_selected -= 1
+                        self.bird_selected -= 1
             if right_button2.collidepoint((mx, my)):   #Right through BIRDS list
                 if self.click:
-                    if(bird_selected == len(birds_list)-1):
-                        bird_selected = 0
+                    if(self.bird_selected == len(self.birds_list)-1):
+                        self.bird_selected = 0
                     else:
-                        bird_selected += 1
+                        self.bird_selected += 1
             if button5.collidepoint((mx, my)):   #Back button returns to main_menu
                 if self.click:
                     #load the same images as selected previously
