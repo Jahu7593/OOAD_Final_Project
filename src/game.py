@@ -25,7 +25,7 @@ class Game(screen.Screen):  #Concrete method for starting/stopping game loop
         subject.register_observer(file_observer)
         # load default background images
         global background_img
-        background_img = pygame.image.load('img/background.png')
+        background_img = pygame.image.load('img/city.png')
         global ground
         ground = pygame.image.load('img/ground.png')
         #font & color definitions
@@ -58,7 +58,7 @@ class Game(screen.Screen):  #Concrete method for starting/stopping game loop
                 pygame.quit()
                 exit()
 
-    def main(self):
+    def main(self, bg_img):
         scroll = 0
         # how many pixels the ground moves
         speed = 4
@@ -82,7 +82,7 @@ class Game(screen.Screen):  #Concrete method for starting/stopping game loop
             clock.tick(fps)
 
             # load the background image into the game
-            self.screen.blit(background_img, (0, 0))
+            self.screen.blit(bg_img, (0, 0))
 
             bird.bird_group.draw(self.screen)
             bird.bird_group.update()
