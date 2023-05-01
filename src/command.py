@@ -38,20 +38,11 @@ class Command():
         return
     
     def start_game(self):
-        skyline_image = pygame.image.load("img/city.png")
-        ground_image = pygame.image.load("img/ground.png")
-        bird_img = pygame.image.load("img/flappy1.png")
-        #start_image = pygame.image.load("img/start.png")
-        
         global game_stopped
-        while game_stopped:
+        while game_stopped:   #outer game loop (menu --> game --> menu handling)
             g.quit_game()
-
-            # Draw Menu
-            s.fill((0, 0, 0))  #s is screen
-            s.blit(skyline_image, (0, 0))
-            s.blit(ground_image, (0, 768))
-            s.blit(bird_img, (100, int(screen_height/2)))
+            m.display_images()
+            #display main menu
             m.click = False
             self.display_main_menu()
             self.restart_condition = True

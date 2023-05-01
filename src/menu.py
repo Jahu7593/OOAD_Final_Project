@@ -25,7 +25,7 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
         bird_selected = 0   #start w/ standard "Flappy" in standard "City"
         #for now storing locations/birds list here, may want to pass in from elsewhere later
         global locations_list, birds_list
-        locations_list = ["City", "Desert", "Castle"]
+        locations_list = ["City", "Desert", "Jungle", "Beach"]
         birds_list = ["Flappy", "Cessna", "Eagle"]
         global click
         self.click = False
@@ -36,6 +36,25 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
     def draw_text(text, font, text_col, x, y, self):
         img = font.render(text, True, text_col)
         self.screen.blit(img, (x, y))
+
+    def load_init_images(self):   #function for first game launch
+        #Load initial launch images
+        city_img = pygame.image.load("img/city.png")
+        ground_img = pygame.image.load("img/ground.png")
+        flappy1_img = pygame.image.load("img/flappy1.png")
+        #start_image = pygame.image.load("img/start.png")
+        return city_img, ground_img, flappy1_img
+    
+    def display_images(self):   #function for each initial menu loading
+        bg_str = "img/" + locations_list[location_selected].lower() + ".png"   #selects current background image
+        bg_img = pygame.image.load(bg_str)
+        ground_img = pygame.image.load("img/ground.png")
+        flappy1_img = pygame.image.load("img/flappy1.png")
+
+        self.screen.fill((0, 0, 0))  #s is screen
+        self.screen.blit(bg_img, (0, 0))
+        self.screen.blit(ground_img, (0, 768))
+        self.screen.blit(flappy1_img, (100, int(self.screen_height/2)))
     
     def main_menu(self, restart_condition, curr_score, high_score):
         if restart_condition == True:
@@ -172,12 +191,16 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
                         location_selected = len(locations_list) - 1
                     else:
                         location_selected -= 1
+                    self.display_images()
+                    self.options_menu()
             if right_button1.collidepoint((mx, my)):   #Right through MAPS list
                 if self.click:
                     if(location_selected == len(locations_list)-1):
                         location_selected = 0
                     else:
                         location_selected += 1
+                    self.display_images()
+                    self.options_menu()
             if left_button2.collidepoint((mx, my)):   #Left through BIRDS list
                 if self.click:
                     if(bird_selected == 0):
@@ -193,10 +216,7 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
             if button5.collidepoint((mx, my)):   #Back button returns to main_menu
                 if self.click:
                     #load the same images as selected previously
-                    img = pygame.image.load("img/city.png")  #destroy triangles by drawing over w/ location and bird
-                    self.screen.blit(img, (0, 0))
-                    bird = pygame.image.load("img/flappy1.png")
-                    self.screen.blit(bird, (100, int(self.screen_height/2)))
+                    self.display_images()
                     return
             
             #event listner
