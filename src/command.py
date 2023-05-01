@@ -39,7 +39,7 @@ class Command():
     
     def start_game(self):
         global game_stopped
-        while game_stopped:   #outer game loop (menu --> game --> menu handling)
+        while game_stopped:   #outer game loop (menu --> game --> menu, handling)
             g.quit_game()
             m.display_images()
             #display main menu

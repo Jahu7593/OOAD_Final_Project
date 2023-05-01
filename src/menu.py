@@ -34,22 +34,16 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
     def draw_text(text, font, text_col, x, y, self):
         img = font.render(text, True, text_col)
         self.screen.blit(img, (x, y))
-
-    def load_init_images(self):   #function for first game launch
-        #Load initial launch images
-        city_img = pygame.image.load("img/city.png")
-        ground_img = pygame.image.load("img/ground.png")
-        flappy1_img = pygame.image.load("img/flappy1.png")
-        #start_image = pygame.image.load("img/start.png")
-        return city_img, ground_img, flappy1_img
     
     def display_images(self):   #function for each initial menu loading
         bg_str = "img/" + self.locations_list[self.location_selected].lower() + ".png"   #selects current background image
         bg_img = pygame.image.load(bg_str)
+        bg_img = pygame.transform.scale(bg_img, (864, 768))
+
         ground_img = pygame.image.load("img/ground.png")
         flappy1_img = pygame.image.load("img/flappy1.png")
 
-        self.screen.fill((0, 0, 0))  #s is screen
+        self.screen.fill((0, 0, 0))  #s is screen    #city is 864 x 768
         self.screen.blit(bg_img, (0, 0))
         self.screen.blit(ground_img, (0, 768))
         self.screen.blit(flappy1_img, (100, int(self.screen_height/2)))
