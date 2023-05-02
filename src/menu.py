@@ -55,6 +55,8 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
         return bg_img, self.birds_list[self.bird_selected].lower()
     
     def main_menu(self, restart_condition, curr_score, high_score):
+        with open('MaxScore.txt', 'r', encoding='utf-8') as file:
+            HS = file.readlines()
         if restart_condition == True:
             btn1_string = "Restart"
         else:
@@ -86,7 +88,7 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
             self.draw_text("Recent Score", small_font, white, int(self.screen_width/2 - currentscore_width/2)-150, score_y-15, self)  
             self.draw_text("High Score", small_font, white, int(self.screen_width/2 - highscore_width/2)+150, score_y-15, self)  
             self.draw_text(str(curr_score), font, white, int(self.screen_width/2 - cs_width/2)-150, score_y+15, self)  
-            self.draw_text(str(high_score), font, white, int(self.screen_width/2 - hs_width/2)+150, score_y+15, self)  
+            self.draw_text(HS[0], font, white, int(self.screen_width/2 - hs_width/2)+150, score_y+15, self)  
             #initialize buttons
             button1 = pygame.Rect(b1x, b1y, button_width, button_height)   #(x, y, width, height)
             button2 = pygame.Rect(b1x, b2y, button_width, button_height)

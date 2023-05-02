@@ -32,7 +32,9 @@ class Game(screen.Screen):  #Concrete method for starting/stopping game loop
         global font, white
         font = pygame.font.SysFont('Bauhaus 93', 60)
         white = (255, 255, 255)
-        self.high_score = 0
+        with open('MaxScore.txt', 'r', encoding='utf-8') as file:
+            HS = file.readlines()
+        self.high_score = HS[0]
 
         print("Game Object Initialized")
     
@@ -58,6 +60,22 @@ class Game(screen.Screen):  #Concrete method for starting/stopping game loop
                 pygame.quit()
                 exit()
 
+    #deletes line from txt file, this is from https://www.pythonforbeginners.com/files/how-to-delete-a-specific-line-in-a-file
+    def remove_line(fileName,lineToSkip):
+        """ Removes a given line from a file """
+        with open(fileName,'r') as read_file:
+            lines = read_file.readlines()
+
+        currentLine = 1
+        with open(fileName,'w') as write_file:
+            for line in lines:
+                if currentLine == lineToSkip:
+                    pass
+                else:
+                    write_file.write(line)
+        
+                currentLine += 1
+
     def main(self, bg_img, bird_str):
 
         bird_group = pygame.sprite.Group()
@@ -79,6 +97,10 @@ class Game(screen.Screen):  #Concrete method for starting/stopping game loop
         run = True
         score = 0
         pass_pipe = False
+        # saving highscore
+        with open('MaxScore.txt', 'r', encoding='utf-8') as file:
+            HS = file.readlines()
+        
 
         # we want to run the game until someone exits out of it
         while run:
@@ -145,8 +167,12 @@ class Game(screen.Screen):  #Concrete method for starting/stopping game loop
 
             # checking if the game is over or we need to reset
             if game_over == True:
-                if self.high_score < score:
-                    self.high_score = score
+                if int(HS[0]) < score:
+                    # self.high_score = score
+                    
+                    HS[0] = score
+                    with open('MaxScore.txt', 'w') as file:
+                        file.writelines(str(score))
                     subject.notify_observers(self.high_score)
                     # print("new high score", high_score)
                 if restart.button.draw() == True:
@@ -157,7 +183,7 @@ class Game(screen.Screen):  #Concrete method for starting/stopping game loop
                     curr_score = score
                     score = self.reset_game()
                     #Return to main menu here...
-                    return curr_score, self.high_score  #return to main menu with current score, after selecting restart
+                    return curr_score, HS[0] #self.high_score  #return to main menu with current score, after selecting restart
 
             for event in pygame.event.get():
                 # if someone selects the exit out of the game button
