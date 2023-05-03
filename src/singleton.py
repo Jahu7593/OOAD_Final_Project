@@ -1,6 +1,7 @@
 class Singleton:
     #comes from geeks for geeks
     # Here will be the instance stored.
+    #this is the singleton pattern and makes sure one instance of the pipe is made
     __instance = None
 
     @staticmethod

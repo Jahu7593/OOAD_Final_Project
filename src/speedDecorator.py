@@ -1,4 +1,6 @@
 #comes from geeks for geeks with a few differences.
+#was trying to wrapp the speed and mutiply it but i was having too many problems with that
+#so i decided to return the values i wanted. This is the Decorator pattern
 class MainSpeed:
     def __inti__(self):
         global speed

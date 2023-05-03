@@ -2,6 +2,7 @@ import os
 # used a little help from Geeks for Geeks and Stack overflow to help form the obeserver patern into python.
 #even used a little help from ChatGPT, to change some of our code from FNCD obserever from java into python then
 #tweeked that code to work with our flappy bird game.
+#this is the observer pattern.
 
 class Subject:
     def __init__(self):

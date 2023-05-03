@@ -9,6 +9,7 @@ import singleton
 pygame.init()
 
 scroll_speed = 4
+#decorator pattern
 DSSP = menu.Menu.DSSP
 print(DSSP)
 if DSSP == "Average":
@@ -28,6 +29,7 @@ pipe_frequency = 1500
 
 
 class Pipe(pygame.sprite.Sprite):
+    #singleton pattern
     pipe = singleton.Singleton()
     def __init__(self, x, y, position):
         pygame.sprite.Sprite.__init__(self)
