@@ -4,12 +4,14 @@ import pipe
 import restart
 import scoreObserver
 import command
+import speedDecorator
 import screen
 
 class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
     # imports all pygame modules and then initialzes it
     pygame.init()
     #Restart condition - False only for first menu display
+    DSSP = "Average"
     def __init__(self, x):
         self.screen_height = x.screen_height
         self.screen_width = x.screen_width
@@ -22,13 +24,18 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
         orange = (255, 124, 31)
         self.location_selected = 0
         self.bird_selected = 0   #start w/ standard "Flappy" in standard "City"
+        self.birdSpeed_selected = 2
         #for now storing locations/birds list here, may want to pass in from elsewhere later
         self.locations_list = ["City", "Desert", "Jungle", "Beach", "Colorado", "Dunes", "Hills", "Egypt"]
         self.birds_list = ["Yellow", "Red", "Blue"]
+        self.birdSpeed_list = ["Slow","Average","Fast"]
         global click
         self.click = False
-        
+        # self.DSSP
         print("Menu Object Initialized")
+
+    def getDSSP(self):
+        return  self.DSSP
 
     @staticmethod
     def draw_text(text, font, text_col, x, y, self):
@@ -84,7 +91,7 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
             b1y = score_y + 100    #y below title
             b2y = b1y + button_height + 30
             b3y = b1y + 2*button_height + 60
-            #Display High Scores
+          #Display High Scores
             self.draw_text("Recent Score", small_font, white, int(self.screen_width/2 - currentscore_width/2)-150, score_y-15, self)  
             self.draw_text("High Score", small_font, white, int(self.screen_width/2 - highscore_width/2)+150, score_y-15, self)  
             self.draw_text(str(curr_score), font, white, int(self.screen_width/2 - cs_width/2)-150, score_y+15, self)  
@@ -143,12 +150,14 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
         while True: # Draw Options Menu
             location_str = self.locations_list[self.location_selected]
             bird_str = self.birds_list[self.bird_selected]
+            speed_str = self.birdSpeed_list[self.birdSpeed_selected]
             #get mouse pointer position
             mx, my = pygame.mouse.get_pos()
             #get width/length of text for centering
             fb_width, fb_height = font.size("FLAPPY BIRD")    
             location_width, location_height = small_font.size(location_str)
             birdname_width, birdname_height = small_font.size(bird_str)
+            speed_width, speed_height = small_font.size(speed_str)
             back_width, back_height = small_font.size("Back")
             #Set positions
             button_width = 200
@@ -158,31 +167,41 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
             b1y = title_y + 200    #y below title
             b2y = b1y + button_height + 30
             b3y = b1y + 2*button_height + 60
+            b5y = b1y + 4*button_height + 120
             #initialize buttons
             left_button1 = pygame.draw.polygon(self.screen, orange, [[b1x-50, b1y+(button_height/2)], [b1x-10, b1y+button_height-10], [b1x-10, b1y+10]], 0)
             right_button1 = pygame.draw.polygon(self.screen, orange, [[b1x+button_width+50, b1y+(button_height/2)], [b1x+button_width+10, b1y+button_height-10], [b1x+button_width+10, b1y+10]], 0)
             left_button2 = pygame.draw.polygon(self.screen, orange, [[b1x-50, b2y+(button_height/2)], [b1x-10, b2y+button_height-10], [b1x-10, b2y+10]], 0)
             right_button2 = pygame.draw.polygon(self.screen, orange, [[b1x+button_width+50, b2y+(button_height/2)], [b1x+button_width+10, b2y+button_height-10], [b1x+button_width+10, b2y+10]], 0)
-            button5 = pygame.Rect(b1x, b3y, button_width, button_height)
+            left_button3 = pygame.draw.polygon(self.screen, orange, [[b1x-50, b3y+(button_height/2)], [b1x-10, b3y+button_height-10], [b1x-10, b3y+10]], 0)
+            right_button3 = pygame.draw.polygon(self.screen, orange, [[b1x+button_width+50, b3y+(button_height/2)], [b1x+button_width+10, b3y+button_height-10], [b1x+button_width+10, b3y+10]], 0)
+            button5 = pygame.Rect(b1x, b5y, button_width, button_height)
             #draw 2 orange backgrounds (for birdname and location)
             pygame.draw.rect(self.screen, orange, pygame.Rect(b1x, b1y, button_width, button_height), 0, 15)
             pygame.draw.rect(self.screen, orange, pygame.Rect(b1x, b1y + button_height + 30, button_width, button_height), 0, 15)
+            pygame.draw.rect(self.screen, orange, pygame.Rect(b1x, b1y + 2*button_height + 60, button_width, button_height), 0, 15)
             #draw button 5 (back)
             pygame.draw.rect(self.screen, orange, button5, 0, 15)
             #draw white borders around buttons
             pygame.draw.rect(self.screen, white, pygame.Rect(b1x, b1y, button_width, button_height), 5, 15)
             pygame.draw.rect(self.screen, white, pygame.Rect(b1x, b1y + button_height + 30, button_width, button_height), 5, 15)
             pygame.draw.rect(self.screen, white, pygame.Rect(b1x, b1y + 2*button_height + 60, button_width, button_height), 5, 15)
+            pygame.draw.rect(self.screen, white, pygame.Rect(b1x, b1y + 4*button_height + 120, button_width, button_height), 5, 15)
             #draw white borders around arrows
             pygame.draw.polygon(self.screen, white, [[b1x-50, b1y+(button_height/2)], [b1x-10, b1y+button_height-10], [b1x-10, b1y+10]], 5)
             pygame.draw.polygon(self.screen, white, [[b1x+button_width+50, b1y+(button_height/2)], [b1x+button_width+10, b1y+button_height-10], [b1x+button_width+10, b1y+10]], 5)
             pygame.draw.polygon(self.screen, white, [[b1x-50, b2y+(button_height/2)], [b1x-10, b2y+button_height-10], [b1x-10, b2y+10]], 5)
             pygame.draw.polygon(self.screen, white, [[b1x+button_width+50, b2y+(button_height/2)], [b1x+button_width+10, b2y+button_height-10], [b1x+button_width+10, b2y+10]], 5)
+            pygame.draw.polygon(self.screen, white, [[b1x-50, b3y+(button_height/2)], [b1x-10, b3y+button_height-10], [b1x-10, b3y+10]], 5)
+            pygame.draw.polygon(self.screen, white, [[b1x+button_width+50, b3y+(button_height/2)], [b1x+button_width+10, b3y+button_height-10], [b1x+button_width+10, b3y+10]], 5)
             #draw text
             self.draw_text("FLAPPY BIRD", font, white, int(self.screen_width/2 - fb_width/2), title_y, self)  #draw "Flappy Bird" title
             self.draw_text(location_str, small_font, white, int(self.screen_width/2 - location_width/2), b1y + 5, self)  
-            self.draw_text(bird_str, small_font, white, int(self.screen_width/2 - birdname_width/2), b2y + 5, self)  
-            self.draw_text("Back", small_font, white, int(self.screen_width/2 - back_width/2), b3y + 5, self)  
+            self.draw_text(bird_str, small_font, white, int(self.screen_width/2 - birdname_width/2), b2y + 5, self) 
+            self.draw_text(speed_str,small_font, white, int(self.screen_width/2 - speed_width/2), b3y + 5, self) 
+            self.DSSP = speed_str
+            # print(self.DSSP)
+            self.draw_text("Back", small_font, white, int(self.screen_width/2 - back_width/2), b5y + 5, self)  
             #check for clicks on buttons
             if left_button1.collidepoint((mx, my)):   #Left through MAPS list
                 if self.click:
@@ -212,6 +231,18 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
                         self.bird_selected = 0
                     else:
                         self.bird_selected += 1
+            if left_button3.collidepoint((mx, my)):   #Left through BIRDS list
+                if self.click:
+                    if(self.birdSpeed_selected == 0):
+                        self.birdSpeed_selected = len(self.birdSpeed_list) - 1
+                    else:
+                        self.birdSpeed_selected -= 1
+            if right_button3.collidepoint((mx, my)):   #Right through BIRDS list
+                if self.click:
+                    if(self.birdSpeed_selected == len(self.birdSpeed_list)-1):
+                        self.birdSpeed_selected = 0
+                    else:
+                        self.birdSpeed_selected += 1
             if button5.collidepoint((mx, my)):   #Back button returns to main_menu
                 if self.click:
                     #load the same images as selected previously

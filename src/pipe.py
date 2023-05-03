@@ -1,19 +1,34 @@
 import pygame
 from pygame.locals import *
 import random
+import speedDecorator
+import menu
+import singleton
 
 # imports all pygame modules and then initialzes it
 pygame.init()
 
+scroll_speed = 4
+DSSP = menu.Menu.DSSP
+print(DSSP)
+if DSSP == "Average":
+    scroll_speed =  speedDecorator.normSpeed().setSpeed()
+elif DSSP == "Slow":
+    scroll_speed = speedDecorator.SlowDown().setSpeed()
+elif DSSP == "Fast":
+    scroll_speed = speedDecorator.SpeedUp().setSpeed()
+
+print(scroll_speed)
 # gap between the two pipes
 pipe_gap = 150
-scroll_speed = 4
+# scroll_speed = 4
 # one and half seconds (milliseconds)
 pipe_frequency = 1500
 # Measure of time since game has started
 
 
 class Pipe(pygame.sprite.Sprite):
+    pipe = singleton.Singleton()
     def __init__(self, x, y, position):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load('img/pipe.png')
