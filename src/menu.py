@@ -88,7 +88,9 @@ class Menu(screen.Screen):  #Concrete menu implementation, controlled by Command
             self.draw_text("Recent Score", small_font, white, int(self.screen_width/2 - currentscore_width/2)-150, score_y-15, self)  
             self.draw_text("High Score", small_font, white, int(self.screen_width/2 - highscore_width/2)+150, score_y-15, self)  
             self.draw_text(str(curr_score), font, white, int(self.screen_width/2 - cs_width/2)-150, score_y+15, self)  
-            self.draw_text(HS[0], font, white, int(self.screen_width/2 - hs_width/2)+150, score_y+15, self)  
+            self.draw_text(str(high_score), font, white, int(self.screen_width/2 - hs_width/2)+150, score_y+15, self)     
+            #Display Repo high score at the bottom
+            self.draw_text("Global High Score: " + HS[0], small_font, white, int(self.screen_width/2 - 420), int(self.screen_height/2 + 420), self)     
             #initialize buttons
             button1 = pygame.Rect(b1x, b1y, button_width, button_height)   #(x, y, width, height)
             button2 = pygame.Rect(b1x, b2y, button_width, button_height)

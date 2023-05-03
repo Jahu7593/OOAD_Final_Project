@@ -183,7 +183,7 @@ class Game(screen.Screen):  #Concrete method for starting/stopping game loop
                     curr_score = score
                     score = self.reset_game()
                     #Return to main menu here...
-                    return curr_score, HS[0] #self.high_score  #return to main menu with current score, after selecting restart
+                    return curr_score  #return to main menu with current score, after selecting restart
 
             for event in pygame.event.get():
                 # if someone selects the exit out of the game button
