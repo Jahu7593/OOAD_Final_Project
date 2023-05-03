@@ -52,5 +52,7 @@ class Command():
             user_input = pygame.mouse.get_pressed()
             if user_input[0]:
                 # bird.clicked = True
-                self.curr_score, self.high_score = g.main(bg_img, bird_img)  #get current score\high score from running main (game), pass in selected image
+                self.curr_score = g.main(bg_img, bird_img)  #get current score\high score from running main (game), pass in selected image
+                if(self.curr_score > self.high_score):  #tracks high score (not global)
+                    self.high_score = self.curr_score
             pygame.display.update()
